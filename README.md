@@ -2,7 +2,7 @@
 
 
 <p align="center" width="100%">
-    <img width="50%" src="https://github.com/luan-vega/springboot_desafio_btg-pactual/blob/main/images/btg-logo.jpg"> 
+    <img width="50%" src="https://github.com/luan-vega/springboot_desafio_btg-pactual/images/btg-logo"> 
 </p>
 
 
