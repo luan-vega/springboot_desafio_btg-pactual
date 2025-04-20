@@ -13,9 +13,11 @@
 <p align="center">
 
   <img alt="Language: Java" src="https://img.shields.io/badge/language-java-green">  
-  <img alt="Version: 1.0" src="https://img.shields.io/badge/framework-springboot-green">
+  <img alt="Framework: SpringBoot" src="https://img.shields.io/badge/framework-springboot-green">
+  <img alt="API: Rest" src="https://img.shields.io/badge/api-rest-green">
+  <img alt="Container: Docker" src="https://img.shields.io/badge/container-docker-green">
   <img alt="Data Base: MongoDB" src="https://img.shields.io/badge/database-mongoDB-green">
-  <img alt="Mensageria: RabbitMQ" src="https://img.shields.io/badge/mensageria-rabbitMQ-orange">
+  <img alt="Mensageria: RabbitMQ" src="https://img.shields.io/badge/mensageria-rabbitMQ-green">
 
 </p>
 
