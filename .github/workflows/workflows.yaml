@@ -19,10 +19,20 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Start MongoDB
+      - name: Set up MongoDB
         run: |
+          sudo apt-get update
+          sudo apt-get install -y mongodb
           sudo systemctl start mongodb
+          sudo systemctl status mongodb
 
-      - name: Build with Maven
+      - name: Verify MongoDB Connection
         run: |
-          mvn --batch-mode --update-snapshots verify
+          mongo --eval 'db.runCommand({ connectionStatus: 1 })'
+
+      - name: Build and Test with Maven
+        env:
+          SPRING_DATA_MONGODB_HOST: localhost
+          SPRING_DATA_MONGODB_PORT: 27017
+        run: |
+          mvn --batch-mode --update-snapshots clean verify
