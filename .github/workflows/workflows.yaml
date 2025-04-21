@@ -19,6 +19,10 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
+      - name: Start MongoDB
+        run: |
+          sudo systemctl start mongodb
+
       - name: Build with Maven
         run: |
           mvn --batch-mode --update-snapshots verify
