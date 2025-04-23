@@ -18,6 +18,7 @@
   <img alt="Container: Docker" src="https://img.shields.io/badge/container-docker-green">
   <img alt="Data Base: MongoDB" src="https://img.shields.io/badge/database-mongoDB-green">
   <img alt="Mensageria: RabbitMQ" src="https://img.shields.io/badge/mensageria-rabbitMQ-green">
+  <img alt="Qualidade: SonarQube" src="https://img.shields.io/badge/qualidade-sonarQube-green">
 
 </p>
 
