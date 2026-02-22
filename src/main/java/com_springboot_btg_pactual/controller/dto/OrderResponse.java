@@ -1,6 +1,6 @@
-package com_springboot_.btg_pactual.controller.dto;
+package com_springboot_btg_pactual.controller.dto;
 
-import com_springboot_.btg_pactual.entity.OrderEntity;
+import com_springboot_btg_pactual.entity.OrderEntity;
 
 import java.math.BigDecimal;
 

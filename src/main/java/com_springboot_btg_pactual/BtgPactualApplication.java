@@ -1,4 +1,4 @@
-package com_springboot_.btg_pactual;
+package com_springboot_btg_pactual;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

@@ -1,4 +1,4 @@
-package com_springboot_.btg_pactual.listener.dto;
+package com_springboot_btg_pactual.listener.dto;
 
 import java.util.List;
 

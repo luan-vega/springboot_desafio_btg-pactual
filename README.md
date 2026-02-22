@@ -1,107 +1,307 @@
-# Desafio Engenheiro de software - BTG Pactual
-
+# BTG Pactual - Order Processing Microservice
 
 <p align="center" width="100%">
-    <img width="50%" src="https://github.com/luan-vega/springboot_desafio_btg-pactual/images/btg-logo"> 
+    <img width="40%" src="./images/btg-logo.jpg"> 
 </p>
 
-
-<h3 align="center">
-  Desafio Backend do BTG Pactual
-</h3>
+<h3 align="center">Microserviço de Processamento de Pedidos</h3>
 
 <p align="center">
-
-  <img alt="Language: Java" src="https://img.shields.io/badge/language-java-green">  
+  <img alt="Language: Java" src="https://img.shields.io/badge/language-java-blue">  
   <img alt="Framework: SpringBoot" src="https://img.shields.io/badge/framework-springboot-green">
-  <img alt="API: Rest" src="https://img.shields.io/badge/api-rest-green">
-  <img alt="Container: Docker" src="https://img.shields.io/badge/container-docker-green">
-  <img alt="Data Base: MongoDB" src="https://img.shields.io/badge/database-mongoDB-green">
-  <img alt="Mensageria: RabbitMQ" src="https://img.shields.io/badge/mensageria-rabbitMQ-green">
-  <img alt="Qualidade: SonarQube" src="https://img.shields.io/badge/qualidade-sonarQube-green">
+  <img alt="API: Rest" src="https://img.shields.io/badge/api-rest-lightblue">
+  <img alt="Container: Docker" src="https://img.shields.io/badge/container-docker-2496ED">
+  <img alt="Data Base: MongoDB" src="https://img.shields.io/badge/database-mongoDB-13AA52">
+  <img alt="Mensageria: RabbitMQ" src="https://img.shields.io/badge/mensageria-rabbitMQ-FF6600">
 
 </p>
 
+## 📋 Descrição
 
-## :rocket: Tecnologias utilizadas
+Microserviço que consome eventos de pedidos via **RabbitMQ**, persiste em **MongoDB** e expõe uma **API REST** para consultar pedidos de clientes com cálculo automático de totais.
 
-* Java 21
-* Spring Boot
-* Spring Data MongoDB
-* RabbitMQ
-* Docker
-
-
-## Instruções
-
-1. Leia esse documento com atenção antes de iniciar as atividades.
-2. Você tem 1 dia, para entregar o plano de trabalho (item 1).
-3. Você tem até 7 dias corridos para concluir as atividades aqui solicitadas.
-   Caso não consiga concluir todas as atividades, por favor, entregue o que foi feito até a data solicitada.
-4. Crie um repositório no Github para seu projeto e mantenha o seu projeto como público.
-5. Ao concluir as etapas de entrega, envie um e-mail, com o assunto "[DESAFIO BTG] - SEU NOME COMPLETO", para: ****@btgpactual.com"
-6. Fique à vontade para utilizar tecnologias, frameworks e técnicas não citadas nas atividades ou substituir as que julgar necessário. Informe em seu relatório as modificações e os motivos.
-7. A aplicação deve ser entregue “rodando”, com instruções para interagir com ela.
-8. Recomendamos a utilização do Docker (http://www.docker.com) para montagem do ambiente (MongoDb, RabbitMQ, Web Application, etc.)
-   Caso opte pela utilização do Docker, crie uma única imagem com todos os containers e compartilhe em seu relatório final.
-
-## Escopo
-Processar pedidos e gerar relatório.
-
-## Atividades
-1. Elabore e entregue um plano de trabalho.
-    - Crie suas atividades em tasks
-    - Estime horas
-2. Crie uma aplicação, na tecnologia de sua preferência (JAVA, DOTNET, NODEJS)
-3. Modele e implemente uma base de dados (PostgreSQL, MySQL, MongoDB).
-4. Crie um micro serviço que consuma dados de uma fila RabbitMQ e grave os dados para conseguir listar as informações:
-    - Valor total do pedido
-    - Quantidade de Pedidos por Cliente
-    - Lista de pedidos realizados por cliente
-
-Exemplo da mensagem que deve ser consumida:
+## 🏗️ Arquitetura
 
 ```
-   {
-       "codigoPedido": 1001,
-       "codigoCliente":1,
-       "itens": [
-           {
-               "produto": "lápis",
-               "quantidade": 100,
-               "preco": 1.10
-           },
-           {
-               "produto": "caderno",
-               "quantidade": 10,
-               "preco": 1.00
-           }
-       ]
-   }
+┌─────────────────────────────────────────────────────────┐
+│                    RabbitMQ (Fila)                      │
+│            (btg-pactual-order-queue)                    │
+└──────────────────────┬──────────────────────────────────┘
+                       │ Consome Eventos
+                       ▼
+┌──────────────────────────────────────────────────────────┐
+│         Spring Boot Microservice                         │
+│  ┌────────────────────────────────────────────────────┐  │
+│  │         OrderCreatedListener                       │  │
+│  │  (Consome mensagens da fila RabbitMQ)              │  │
+│  └────────────────────────────────────────────────────┘  │
+│                       │                                  │
+│                       ▼                                  │
+│  ┌────────────────────────────────────────────────────┐  │
+│  │         OrderService                               │  │
+│  │  (Processa e salva pedidos)                        │  │
+│  └────────────────────────────────────────────────────┘  │
+│                       │                                  │
+│                       ▼                                  │
+│  ┌────────────────────────────────────────────────────┐  │
+│  │         OrderRepository (MongoDB)                  │  │
+│  │  (Persistência de dados)                           │  │
+│  └────────────────────────────────────────────────────┘  │
+│                                                          │
+└──────────────────────────────────────────────────────────┘
+                       │
+                       │ Consulta
+                       ▼
+┌──────────────────────────────────────────────────────────┐
+│         API REST - OrderController                       │
+│  GET /customers/{customerId}/orders                      │
+│  (Consulta pedidos com paginação)                        │
+└──────────────────────────────────────────────────────────┘
 ```
 
+## 🚀 Tecnologias
 
-5. Crie uma API REST, em que permita o consultar as seguintes informações:
-    - Valor total do pedido
-    - Quantidade de Pedidos por Cliente
-    - Lista de pedidos realizados por cliente
+| Tecnologia | Versão |
+|-----------|--------|
+| Java | 17 |
+| Spring Boot | 3.4.4 |
+| Spring Data MongoDB | - |
+| Spring AMQP (RabbitMQ) | - |
+| Lombok | - |
+| JUnit 5 | - |
+| Docker | - |
 
+## ✨ Funcionalidades
 
-6. Relatório Técnico explicando de forma sumarizada, considerando:
-    - Plano de Trabalho (previsto vs realizado)
-    - Caso haja algum desvio entre o planejamento original e a execução, explique o que houve.
-    - Caso o plano de trabalho foi seguido sem desvio, comente os motivos para esse resultado.
-    - Tecnologias utilizadas
-    - Linguagens, Versões, IDE's, SO's
-    - Diagrama de arquitetura
-    - Modelagem da base de dados
-    - Diagrama de implantação da solução
-    - Diagrama de infra com os recursos de cloud utilizados (máquina, SO, produtos específicos, etc.)
-    - Evidência de Testes funcionais da aplicação
-    - Publique os códigos gerados, em seu perfil do https://github.com/
-    - Cite no relatório:
-        - O seu perfil gitHub e a(s) URL(s) onde se encontram os códigos gerados
-        - Referências utilizadas
-        - Demais itens que você julgar relevante (Framework ou técnicas de testes, metodologias, etc.)
-        - Se foi utilizado o Docker, para montagem do Ambiente, publique em seu perfil do http://hub.docker.com as imagens finais
-        - Cite no relatório: O seu perfil dockerHub e a(s) URL(s) onde se encontram as imagens geradas
+- ✅ Consome eventos JSON da fila RabbitMQ
+- ✅ Calcula total do pedido automaticamente (`quantidade × preço`)
+- ✅ Persiste em MongoDB com índices para performance
+- ✅ API REST com paginação para listar pedidos por cliente
+- ✅ Calcula total consolidado de todos os pedidos do cliente
+- ✅ Logging automático e tratamento de erros
+
+## 📊 Modelo de Dados
+
+### Mensagem RabbitMQ Consumida
+
+```json
+{
+  "codigoPedido": 1001,
+  "codigoCliente": 1,
+  "itens": [
+    {"produto": "lápis", "quantidade": 100, "preco": 1.10},
+    {"produto": "caderno", "quantidade": 10, "preco": 1.00}
+  ]
+}
+```
+
+### MongoDB - Coleção `tb_order`
+
+```javascript
+{
+  "_id": Long,                    // ID do Pedido
+  "customerId": Long,             // ID do Cliente (indexado)
+  "total": Decimal128,            // Valor total
+  "items": [
+    {
+      "product": String,
+      "quantity": Integer,
+      "price": Decimal128
+    }
+  ]
+}
+```
+
+## 🔌 API REST
+
+### GET /customers/{customerId}/orders
+
+Retorna pedidos paginados e total consolidado do cliente.
+
+**Parâmetros:**
+```
+customerId: Long (path) - ID do cliente
+page: Integer (query) - Página [padrão: 0]
+pageSize: Integer (query) - Itens por página [padrão: 10]
+```
+
+**Resposta:**
+```json
+{
+  "sumary": {
+    "totalOnOrders": 1150.00
+  },
+  "data": [
+    {
+      "orderId": 1001,
+      "custumerId": 1,
+      "total": 150.00
+    }
+  ],
+  "pagination": {
+    "page": 0,
+    "pageSize": 10,
+    "totalElements": 2,
+    "totalPages": 1
+  }
+}
+```
+
+## 🚀 Como Usar
+
+### Pré-requisitos
+- Java 17+
+- Maven 3.6+
+- Docker & Docker Compose
+
+### Iniciar com Docker Compose
+
+```bash
+cd springboot_desafio_btg-pactual
+docker-compose -f local/docker-compose.yaml up -d
+```
+
+Serviços iniciados:
+- MongoDB: `localhost:27017`
+- RabbitMQ Management: `localhost:15672` (guest/guest)
+- Aplicação: `localhost:8080`
+
+### Build Local
+
+```bash
+mvn clean install
+mvn clean package -DskipTests
+```
+
+### Executar
+
+```bash
+# Opção 1: Maven
+mvn spring-boot:run
+
+# Opção 2: JAR
+java -jar target/btg-pactual-0.0.1-SNAPSHOT.jar
+```
+
+### Testes
+
+```bash
+mvn test                                # Testes unitários
+mvn test jacoco:report                  # Com cobertura
+mvn pitest:mutationCoverage             # Mutation testing
+```
+
+## 📌 Exemplos
+
+### Enviar Pedido para RabbitMQ
+
+Acesse `http://localhost:15672` (guest/guest) e envie para fila `btg-pactual-order-queue`:
+
+```json
+{
+  "codigoPedido": 1001,
+  "codigoCliente": 1,
+  "itens": [
+    {"produto": "Mouse", "quantidade": 2, "preco": 50.00},
+    {"produto": "Teclado", "quantidade": 1, "preco": 150.00}
+  ]
+}
+```
+
+### Consultar Pedidos
+
+```bash
+curl -X GET "http://localhost:8080/customers/1/orders?page=0&pageSize=10"
+```
+
+**Postman/Insomnia:**
+- Método: GET
+- URL: `http://localhost:8080/customers/1/orders`
+- Query params: `page=0&pageSize=10`
+
+## 📁 Estrutura do Projeto
+
+```
+src/main/java/com_springboot_/btg_pactual/
+├── BtgPactualApplication.java
+├── config/
+│   └── RabbitMqConfig.java
+├── controller/
+│   ├── OrderController.java
+│   └── dto/
+│       ├── ApiResponse.java
+│       ├── OrderResponse.java
+│       └── PaginationResponse.java
+├── entity/
+│   ├── OrderEntity.java
+│   └── OrderItem.java
+├── listener/
+│   ├── OrderCreatedListener.java
+│   └── dto/
+│       ├── OrderCreatedEvent.java
+│       └── OrderItemEvent.java
+├── repository/
+│   └── OrderRepository.java
+└── service/
+    └── OrderService.java
+```
+
+## 🔍 Componentes Principais
+
+### OrderController
+- Expõe endpoint GET `/customers/{id}/orders`
+- Retorna pedidos paginados e total consolidado
+
+### OrderCreatedListener
+- Escuta fila RabbitMQ `btg-pactual-order-queue`
+- Consome eventos JSON e delega ao Service
+
+### OrderService
+- `save()` - Processa evento e persiste no MongoDB
+- `findAllByCustumerId()` - Busca paginada de pedidos
+- `findTotalOnOrdersByCustomerId()` - Total consolidado com agregação
+
+### OrderEntity
+- Mapeamento da coleção `tb_order`
+- Índice em `customerId` para performance
+- BigDecimal para valores monetários
+
+### RabbitMqConfig
+- Declara fila `btg-pactual-order-queue`
+- Configura serialização JSON (Jackson)
+
+## 📡 Configuração
+
+**application.properties:**
+```properties
+spring.application.name=btg-pactual
+spring.data.mongodb.host=localhost
+spring.data.mongodb.port=27017
+spring.data.mongodb.database=btg-pactual-database
+spring.data.mongodb.auto-index-creation=true
+```
+
+**Variáveis de ambiente:**
+```bash
+export MONGO_HOST=seu-host
+export MONGO_PORT=27017
+export MONGO_DATABASE=seu-banco
+```
+
+### MongoDB 
+```bash
+docker ps | grep mongo
+docker-compose -f local/docker-compose.yaml restart mongodb
+```
+
+### RabbitMQ 
+```bash
+# Acessar: http://localhost:15672 (guest/guest)
+docker ps | grep rabbitmq
+```
+
+### Aplicação não inicia
+```bash
+mvn spring-boot:run --debug
+netstat -ano | findstr :8080  # Windows - porta 8080 em uso?
+```

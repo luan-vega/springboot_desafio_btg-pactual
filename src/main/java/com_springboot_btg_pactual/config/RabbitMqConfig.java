@@ -1,4 +1,4 @@
-package com_springboot_.btg_pactual.config;
+package com_springboot_btg_pactual.config;
 
 import org.springframework.amqp.core.Declarable;
 import org.springframework.amqp.core.Queue;

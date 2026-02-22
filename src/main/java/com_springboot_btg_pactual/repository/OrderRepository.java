@@ -1,6 +1,6 @@
-package com_springboot_.btg_pactual.repository;
+package com_springboot_btg_pactual.repository;
 
-import com_springboot_.btg_pactual.entity.OrderEntity;
+import com_springboot_btg_pactual.entity.OrderEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.mongodb.repository.MongoRepository;

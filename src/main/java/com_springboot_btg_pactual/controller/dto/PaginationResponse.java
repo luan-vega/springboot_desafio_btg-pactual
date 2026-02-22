@@ -1,4 +1,4 @@
-package com_springboot_.btg_pactual.controller.dto;
+package com_springboot_btg_pactual.controller.dto;
 
 import org.springframework.data.domain.Page;
 

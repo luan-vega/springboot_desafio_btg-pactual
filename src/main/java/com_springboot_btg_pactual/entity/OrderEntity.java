@@ -1,4 +1,4 @@
-package com_springboot_.btg_pactual.entity;
+package com_springboot_btg_pactual.entity;
 
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;

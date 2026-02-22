@@ -1,14 +1,14 @@
-package com_springboot_.btg_pactual.listener;
+package com_springboot_btg_pactual.listener;
 
-import com_springboot_.btg_pactual.listener.dto.OrderCreatedEvent;
-import com_springboot_.btg_pactual.service.OrderService;
+import com_springboot_btg_pactual.listener.dto.OrderCreatedEvent;
+import com_springboot_btg_pactual.service.OrderService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.messaging.Message;
 import org.springframework.stereotype.Component;
 
-import static com_springboot_.btg_pactual.config.RabbitMqConfig.ORDER_CREATED_QUEUE;
+import static com_springboot_btg_pactual.config.RabbitMqConfig.ORDER_CREATED_QUEUE;
 
 @Component
 public class OrderCreatedListener {

@@ -1,9 +1,9 @@
-package com_springboot_.btg_pactual.controller;
+package com_springboot_btg_pactual.controller;
 
-import com_springboot_.btg_pactual.controller.dto.ApiResponse;
-import com_springboot_.btg_pactual.controller.dto.OrderResponse;
-import com_springboot_.btg_pactual.controller.dto.PaginationResponse;
-import com_springboot_.btg_pactual.service.OrderService;
+import com_springboot_btg_pactual.controller.dto.ApiResponse;
+import com_springboot_btg_pactual.controller.dto.OrderResponse;
+import com_springboot_btg_pactual.controller.dto.PaginationResponse;
+import com_springboot_btg_pactual.service.OrderService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
